@@ -1,0 +1,182 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Moeslem</title>
+    <link rel="stylesheet" href="style.css" />
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+  </head>
+  <style>
+    @media (max-width: 911px) {
+      html {
+        font-size: 95%;
+      }
+
+      .navbar a {
+        font-size: 90%;
+      }
+
+      .navbar {
+        font-size: 80%;
+      }
+
+      .list {
+        font-size: 40%;
+      }
+
+      .container {
+        font-size: 66%;
+        width: 153px;
+        min-height: 45px;
+        /* gap: 17%; */
+        margin: 7%;
+      }
+    }
+
+    @media (max-width: 768px) {
+      html {
+        font-size: 80%;
+      }
+      .navbar h1 {
+        font-size: 200%;
+      }
+
+      .navbar a {
+        font-size: 76%;
+      }
+
+      .container {
+        font-size: 65%;
+        width: 140px;
+        min-height: 40px;
+        margin: 5%;
+      }
+    }
+
+    @media (max-width: 617px) {
+      .navbar h1 {
+        width: auto;
+        font-size: 200%;
+      }
+
+      .navbar a {
+        font-size: 90%;
+      }
+      .container {
+        font-size: 57%;
+        width: 110px;
+        min-height: 40px;
+        margin: 5%;
+      }
+    }
+    
+    @media (max-width: 450px) {
+        .hero {
+          flex-direction: column;
+         height: 70rem;
+        }
+        .left {
+          margin-bottom: 90px;
+          font-size: 190%;
+         flex-direction: column;
+        }
+
+
+        .navbar h1 {
+          width: auto;
+          font-size: 180%;
+         margin-right: 15px;
+
+        }
+
+        .navbar a {
+          font-size: 70%;
+         /* padding: 30px; */
+        }
+
+
+        .right img {
+          width: 400px;
+       
+        }
+
+        .container {
+        font-size: 30%;
+        width: 75px;
+        min-height: 20px;
+        margin: 12%;
+      }
+      }
+  </style>
+  <body>
+    <nav class="navbar">
+      <h1>Moeslem</h1>
+
+      <a href="index.html">Home</a>
+      <a href="jadwalSholat.html">Jadwal sholat</a>
+      <a href="AsmaulHusna.html">Asmaul husna</a>
+      <a href="ListSurat.html">List surat</a>
+    </nav>
+
+    <h1 class="List">List surat</h1>
+    <div id="result"></div>
+
+    <script>
+      window.onload = function () {
+        getData();
+      }; //ini adalah kode request ke API bang hasan
+
+      function getData() {
+        fetch("https://api.banghasan.com/quran/format/json/surat") //kita kasih then lalu buat function
+          .then(function (response) {
+            if (!response.ok) {
+              // klo misalkan respon nya tdk oke
+              throw new Error("Gagal megambil data");
+            }
+            return response.json(); //ini klo berhasil
+          })
+          .then(function (data) {
+            displayData(data);
+          })
+          .catch(function (error) {
+            console.log("Terjdi kesalahan", error);
+          });
+      }
+
+      function displayData(data) {
+        var resultDiv = document.getElementById("result");
+        resultDiv.innerHTML = "";
+
+        data.hasil.forEach(function (surat) {
+          var suratDiv = document.createElement("div");
+          suratDiv.classList.add("surah");
+          suratDiv.className = "container";
+
+          var namaSurah = document.createElement("h2");
+          namaSurah.textContent = surat.nama;
+          namaSurah.className = "nama";
+
+          var hr = document.createElement("hr");
+          hr.className = "hr";
+
+          var namaAsma = document.createElement("p");
+          namaAsma.textContent = "asma: " + " " + surat.asma;
+          namaAsma.className = "asma";
+
+          var namaType = document.createElement("p");
+          namaType.textContent = "Turun di: " + " " + surat.type;
+          namaType.className = "type"; // var namaKeterangan = document.createElement('p'); // namaKeterangan.textContent = surat.keterangan; // namaKeterangan.className = 'keterangan';
+
+          suratDiv.appendChild(namaSurah);
+          suratDiv.appendChild(hr);
+          suratDiv.appendChild(namaAsma);
+          suratDiv.appendChild(namaType); // suratDiv.appendChild(namaKeterangan);
+          resultDiv.appendChild(suratDiv);
+        });
+      }
+    </script>
+
+  
+  </body>
+</html>

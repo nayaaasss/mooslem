@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Moeslem</title> <link rel="stylesheet" href="style.css">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+  
+</head>
+<style>
+    
+  @media (max-width: 911px) {
+        html {
+          font-size: 95%;
+        }
+
+        .navbar a {
+          font-size: 90%;
+        }
+
+        .navbar {
+          font-size: 80%;
+        }
+
+        .list {
+          font-size: 40%;
+        }
+
+        .container2 {
+        width: 150px;
+        min-height: 70px;
+        }
+      }
+
+  @media (max-width: 768px) {
+    html {
+      font-size: 80%;
+    }
+    .navbar h1 {
+        font-size: 200%;
+      }
+
+    .navbar a {
+        font-size: 76%;
+      }
+
+    .container2 {
+      width: 133px;
+      min-height: 60px;
+    }
+  }
+
+@media (max-width: 617px) {
+    
+    .navbar h1 {
+            width: auto;
+            font-size: 200%;
+          }
+
+          .navbar a {
+            font-size: 90%;
+          }
+
+
+    .container2 {
+      width: 116px;
+      min-height: 20px;
+    }
+  }
+
+  
+  @media (max-width: 450px) {
+          .hero {
+            flex-direction: column;
+           height: 70rem;
+          }
+          .left {
+            margin-bottom: 90px;
+            font-size: 190%;
+           flex-direction: column;
+          }
+
+          
+          .navbar h1 {
+            width: auto;
+            font-size: 180%;
+           margin-right: 15px;
+
+          }
+
+          .navbar a {
+            font-size: 70%;
+           /* padding: 30px; */
+          }
+
+
+          .right img {
+            width: 400px;
+         
+          }
+
+          .container2 {
+          font-size: 50%;
+          padding: 10px;
+          width: 70px;
+          min-height: 40px;
+          margin: 12%;
+    }
+
+        }
+
+  </style>
+<body>
+  
+    <nav class="navbar">
+      <h1>Moeslem</h1>
+      <a href="index.html">Home</a>
+        <a href="jadwalSholat.html">Jadwal sholat</a>
+        <a href="AsmaulHusna.html">Asmaul husna</a>
+        <a href="ListSurat.html">List surat</a>
+    </nav>
+
+    
+    <h1 class="List">Asmaul husna</h1>
+    <div id="result2"></div>
+
+    <script>
+          window.onload = function () {
+        getDataAsmaul();
+      }; //ini adalah kode request ke API bang hasan
+
+      function getDataAsmaul() {
+        fetch("https://api.aladhan.com/v1/asmaAlHusna") //kita kasih then lalu buat function
+          .then(function (response) {
+            if (!response.ok) {
+              // klo misalkan respon nya tdk oke
+              throw new Error("Gagal megambil data");
+            }
+            return response.json(); //ini klo berhasil
+          })
+          .then(function (data) {
+            displayDataAsmaul(data)
+            // console.log(data)
+          })
+          .catch(function (error) {
+            console.log("Terjdi kesalahan", error);
+          });
+      }
+
+
+      function displayDataAsmaul(data) {
+        var result2Div = document.getElementById("result2");
+        result2Div.innerHTML = "";
+   
+      data.data.forEach(function (asmaul) {
+          var AsmaulDiv = document.createElement("div");
+          AsmaulDiv.classList.add("asmaul");
+          AsmaulDiv.className = "container2";
+          
+        var namaAsmaul = document.createElement("a");
+        namaAsmaul.textContent = asmaul.name;
+        namaAsmaul.className = "name"
+
+        var namaAsma = document.createElement("a");
+        namaAsma.textContent = asmaul.transliteration;
+        namaAsma.className = "transliteration"
+
+        var namaMeaning = document.createElement("h3");
+        namaMeaning.textContent = asmaul.Meaning;
+        namaMeaning.className = "meaning"
+
+        // var namaArti = document.createElement("a");
+        // namaArti.textContent = asmaul.meaning;
+        // namaArti.className = "meaning"
+       
+        //  AsmaulDiv.appendChild(namaArti)
+        AsmaulDiv.appendChild(namaMeaning)
+         AsmaulDiv.appendChild(namaAsmaul);
+         AsmaulDiv.appendChild(namaAsma)
+         result2Div.appendChild(AsmaulDiv);
+      });
+    }
+  </script>
+
+ 
+
+
+</body>
+</html>
